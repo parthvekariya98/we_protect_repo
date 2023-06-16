@@ -1,6 +1,6 @@
 // MainScreen.js
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, FlatList, Alert } from 'react-native';
+import { View, Text, Image, TextInput, FlatList, Alert, ScrollView } from 'react-native';
 
 const MainScreen = () => {
   const [postalCode, setPostalCode] = useState('');
@@ -9,8 +9,21 @@ const MainScreen = () => {
     { time: '9:00 AM', high: 'High 28℃', low: 'Low 17℃' },
     { time: '10:00 AM', high: 'High 30℃', low: 'Low 19℃' },
     { time: '11:00 AM', high: 'High 26℃', low: 'Low 15℃' },
-    { time: '12:00 AM', high: 'High 28℃', low: 'Low 17℃' },
-    { time: '1:00 AM', high: 'High 30℃', low: 'Low 19℃' },
+    { time: '12:00 PM', high: 'High 28℃', low: 'Low 17℃' },
+    { time: '1:00 PM', high: 'High 30℃', low: 'Low 19℃' },
+    { time: '2:00 PM', high: 'High 26℃', low: 'Low 15℃' },
+    { time: '3:00 PM', high: 'High 28℃', low: 'Low 17℃' },
+    { time: '4:00 PM', high: 'High 30℃', low: 'Low 19℃' },
+    { time: '5:00 PM', high: 'High 26℃', low: 'Low 15℃' },
+    { time: '6:00 PM', high: 'High 28℃', low: 'Low 17℃' },
+    { time: '7:00 PM', high: 'High 30℃', low: 'Low 19℃' },
+    { time: '8:00 PM', high: 'High 30℃', low: 'Low 19℃' },
+    { time: '9:00 PM', high: 'High 26℃', low: 'Low 15℃' },
+    { time: '10:00 PM', high: 'High 28℃', low: 'Low 17℃' },
+    { time: '11:00 PM', high: 'High 30℃', low: 'Low 19℃' },
+    { time: '12:00 AM', high: 'High 26℃', low: 'Low 15℃' },
+    { time: '1:00 AM', high: 'High 28℃', low: 'Low 17℃' },
+    { time: '2:00 AM', high: 'High 30℃', low: 'Low 19℃' },
   ];
 
   const validatePostalCode = () => {
@@ -62,12 +75,14 @@ const MainScreen = () => {
       <View style={{ height: 1, backgroundColor: 'white', marginBottom: 5 }} />
         <Text style={{ fontSize: 16, fontWeight: '300', color: 'white', marginBottom: 5, textAlign:'center' }}>Weather Predictions for the Day</Text>
         <View style={{ height: 1, backgroundColor: 'white' }} />
-        
-      <FlatList
-        data={predictions}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
+        <ScrollView>
+        <FlatList
+          data={predictions}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          scrollEnabled={false}
+        />
+      </ScrollView>
       </View>
     </View>
   );
