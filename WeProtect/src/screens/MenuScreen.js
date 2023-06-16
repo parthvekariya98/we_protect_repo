@@ -10,7 +10,7 @@ const MenuScreen = () => {
     };
 
     const goToPurchasePremium = () => {
-        // Navigate to the Purchase Premium Features screen
+        navigation.navigate('PremiumFeature')
     };
 
     return (

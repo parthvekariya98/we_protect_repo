@@ -5,6 +5,7 @@ import { TouchableOpacity, Image } from 'react-native';
 import MainScreen from './src/screens/MainScreen';
 import MenuScreen from './src/screens/MenuScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import PremiumFeatures from './src/screens/PremiumFeatures';
 
 const Stack = createStackNavigator();
 
@@ -66,6 +67,23 @@ const App = () => {
           component={ProfileScreen}
           options={({ navigation }) => ({
             title: 'Profile',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 20,
+              color: 'white',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => handleBackButton(navigation)} style={{ marginLeft: 16 }}>
+                <Image source={require('./src/images/ic_back.png')} style={{ width: 30, height: 30 }} />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="PremiumFeature"
+          component={PremiumFeatures}
+          options={({ navigation }) => ({
+            title: 'Premium Feature',
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontSize: 20,
