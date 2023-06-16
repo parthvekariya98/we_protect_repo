@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,12 +8,12 @@ import MenuScreen from './src/screens/MenuScreen';
 const Stack = createStackNavigator();
 
 const App = () => {
-  const handleMenuPress = () => {
-    console.log('Menu icon pressed');
+  const handleMenuPress = (navigation) => {
+    navigation.navigate('Menu');
   };
 
-  const handleBackButton = () => {
-    console.log('Menu icon pressed');
+  const handleBackButton = (navigation) => {
+    navigation.goBack();
   };
 
   return (
@@ -26,11 +25,10 @@ const App = () => {
           },
         }}
       >
-        
         <Stack.Screen
           name="Main"
           component={MainScreen}
-          options={{
+          options={({ navigation }) => ({
             title: 'WE Project',
             headerTitleAlign: 'center',
             headerTitleStyle: {
@@ -38,16 +36,16 @@ const App = () => {
               color: 'white',
             },
             headerLeft: () => (
-              <TouchableOpacity onPress={handleMenuPress} style={{ marginLeft: 16 }}>
+              <TouchableOpacity onPress={() => handleMenuPress(navigation)} style={{ marginLeft: 16 }}>
                 <Image source={require('./src/images/ic_menu.png')} style={{ width: 24, height: 24 }} />
               </TouchableOpacity>
             ),
-          }}
+          })}
         />
         <Stack.Screen
           name="Menu"
           component={MenuScreen}
-          options={{
+          options={({ navigation }) => ({
             title: 'Menu',
             headerTitleAlign: 'center',
             headerTitleStyle: {
@@ -55,11 +53,11 @@ const App = () => {
               color: 'white',
             },
             headerLeft: () => (
-              <TouchableOpacity onPress={handleBackButton} style={{ marginLeft: 16 }}>
+              <TouchableOpacity onPress={() => handleBackButton(navigation)} style={{ marginLeft: 16 }}>
                 <Image source={require('./src/images/ic_back.png')} style={{ width: 30, height: 30 }} />
               </TouchableOpacity>
             ),
-          }}
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
