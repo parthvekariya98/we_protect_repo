@@ -26,7 +26,25 @@ const App = () => {
           },
         }}
       >
-        {/* <Stack.Screen
+        
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          options={{
+            title: 'WE Project',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 20,
+              color: 'white',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={handleMenuPress} style={{ marginLeft: 16 }}>
+                <Image source={require('./src/images/ic_menu.png')} style={{ width: 24, height: 24 }} />
+              </TouchableOpacity>
+            ),
+          }}
+        />
+        <Stack.Screen
           name="Menu"
           component={MenuScreen}
           options={{
@@ -42,25 +60,7 @@ const App = () => {
               </TouchableOpacity>
             ),
           }}
-        /> */}
-        <Stack.Screen
-          name="Main"
-          component={MainScreen}
-          options={{
-            title: 'WE PROTECT',
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              fontSize: 20,
-              color: 'white',
-            },
-            headerLeft: () => (
-              <TouchableOpacity onPress={handleMenuPress} style={{ marginLeft: 16 }}>
-                <Image source={require('./src/images/ic_menu.png')} style={{ width: 24, height: 24 }} />
-              </TouchableOpacity>
-            ),
-          }}
         />
-        
       </Stack.Navigator>
     </NavigationContainer>
   );

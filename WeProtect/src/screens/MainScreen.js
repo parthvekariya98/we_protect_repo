@@ -43,7 +43,7 @@ const MainScreen = () => {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#9CD4F8' }}>
-      <Image source={require('../images/center_image.png')} style={{ width: 300, height: 300 }} />
+      <Image source={require('../images/icon6.png')} style={{ width: 300, height: 300,marginTop: 20 }} />
       <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>20°C</Text>
       <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Feels like 15°C</Text>
       <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Night 5°C ↓ Day 28°C ↑</Text>
