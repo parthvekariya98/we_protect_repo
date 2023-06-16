@@ -6,7 +6,7 @@ const MenuScreen = () => {
     const navigation = useNavigation();
 
     const goToProfile = () => {
-        // Navigate to the Profile screen
+        navigation.navigate('Profile')
     };
 
     const goToPurchasePremium = () => {

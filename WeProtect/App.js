@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity, Image } from 'react-native';
 import MainScreen from './src/screens/MainScreen';
 import MenuScreen from './src/screens/MenuScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,7 +22,8 @@ const App = () => {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor: '#82CAF8',
+            // backgroundColor: '#82CAF8',
+            backgroundColor: '#439CEF',
           },
         }}
       >
@@ -47,6 +49,23 @@ const App = () => {
           component={MenuScreen}
           options={({ navigation }) => ({
             title: 'Menu',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 20,
+              color: 'white',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => handleBackButton(navigation)} style={{ marginLeft: 16 }}>
+                <Image source={require('./src/images/ic_back.png')} style={{ width: 30, height: 30 }} />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={({ navigation }) => ({
+            title: 'Profile',
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontSize: 20,
