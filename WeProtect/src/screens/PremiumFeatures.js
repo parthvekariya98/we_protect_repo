@@ -15,17 +15,33 @@ const PremiumFeatures = () => {
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#9CD4F8', alignItems:'center' }}>
-           <View style={styles.cameraView}>
+        <View style={{ flex: 1, backgroundColor: '#9CD4F8', alignItems: 'center' }}>
+            <View style={styles.cameraView}>
                 <TouchableOpacity style={styles.cameraViewContainer}>
                     <Image
                         source={require('../images/ic_camera.png')}
                         style={styles.profileImage}
                     />
                 </TouchableOpacity>
-           </View>
+                <Text style={{ fontSize: 17, fontWeight: '600', color: 'black', marginBottom: 20 }}>SCAN TO PREDICT WEATHER</Text>
+            </View>
             <View style={styles.compareView}>
-                
+                <View style={styles.compareSubView}>
+                    <Text style={{ fontSize: 18, fontWeight: '600', color: 'white', marginTop: 20 }}>COMPARE WEATHER</Text>
+                    <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity
+                            onPress={saveButtonTap}
+                            style={styles.pickBtn}>
+                            <Text style={{ fontSize: 18, fontWeight: '600', color: 'white' }}>Location 1</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={saveButtonTap}
+                            style={styles.pickBtn}>
+                            <Text style={{ fontSize: 18, fontWeight: '600', color: 'white' }}>Location 2</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
                 <TouchableOpacity
                     onPress={saveButtonTap}
                     style={styles.saveBtn}>
@@ -45,25 +61,37 @@ const PremiumFeatures = () => {
 
 const styles = StyleSheet.create({
     cameraView: {
-        width:'90%',
-        height:'20%',
+        width: '90%',
+        // height:'20%',
         borderWidth: 1,
         borderRadius: 8,
         marginTop: 20,
         borderColor: 'white',
-        alignItems:'center',
-        justifyContent:'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     compareView: {
-        width:'90%',
-        height:'20%',
+        width: '90%',
+        // height: '20%',
         borderWidth: 1,
         borderRadius: 8,
         marginTop: 20,
-        borderColor: 'white'
+        borderColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    compareSubView: {
+        backgroundColor: '#439CEF',
+        width: '90%',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginTop: 20,
+        borderColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     newsAlerts: {
-        width:'90%',
+        width: '90%',
         borderWidth: 1,
         borderRadius: 8,
         marginTop: 20,
@@ -79,14 +107,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#0081FB',
         borderRadius: 8
     },
-
+    pickBtn: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        margin: '5%',
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        backgroundColor: '#0081FB',
+        borderRadius: 8
+    },
     cameraViewContainer: {
         alignItems: 'center',
         width: 140,
         height: 140,
         borderRadius: 75,
-        backgroundColor:'gray',
-        justifyContent:'center'
+        backgroundColor: 'gray',
+        justifyContent: 'center',
+        marginVertical: 20
     },
     profileImage: {
         width: 80,
