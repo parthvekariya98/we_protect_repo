@@ -171,8 +171,7 @@ const styles = StyleSheet.create({
   formContainer: {
     width: wp('100%'),
     padding: wp('5%'),
-    borderRadius: 10,
-    elevation: 5,
+    borderRadius: 10
   },
   input: {
     height: hp('5%'),
