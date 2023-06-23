@@ -10,7 +10,8 @@ const MenuScreen = () => {
     };
 
     const goToPurchasePremium = () => {
-        navigation.navigate('PremiumFeature')
+        // navigation.navigate('PremiumFeature')
+        navigation.navigate('Payment');
     };
 
     return (

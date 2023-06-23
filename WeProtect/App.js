@@ -6,6 +6,7 @@ import MainScreen from './src/screens/MainScreen';
 import MenuScreen from './src/screens/MenuScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import PremiumFeatures from './src/screens/PremiumFeatures';
+import PaymentScreen from './src/screens/PaymentScreen';
 
 const Stack = createStackNavigator();
 
@@ -84,6 +85,23 @@ const App = () => {
           component={PremiumFeatures}
           options={({ navigation }) => ({
             title: 'Premium Feature',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 20,
+              color: 'white',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => handleBackButton(navigation)} style={{ marginLeft: 16 }}>
+                <Image source={require('./src/images/ic_back.png')} style={{ width: 30, height: 30 }} />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="Payment"
+          component={PaymentScreen}
+          options={({ navigation }) => ({
+            title: 'Payment',
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontSize: 20,
