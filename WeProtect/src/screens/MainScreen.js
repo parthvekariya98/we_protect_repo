@@ -55,6 +55,7 @@ const MainScreen = () => {
   );
 
   return (
+    <ScrollView>
     <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#9CD4F8' }}>
       <Image source={require('../images/icon6.png')} style={{ width: 300, height: 300,marginTop: 20 }} />
       <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>20°C</Text>
@@ -75,16 +76,15 @@ const MainScreen = () => {
       <View style={{ height: 1, backgroundColor: 'white', marginBottom: 5 }} />
         <Text style={{ fontSize: 16, fontWeight: '300', color: 'white', marginBottom: 5, textAlign:'center' }}>Weather Predictions for the Day</Text>
         <View style={{ height: 1, backgroundColor: 'white' }} />
-        <ScrollView>
         <FlatList
           data={predictions}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           scrollEnabled={false}
         />
-      </ScrollView>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
