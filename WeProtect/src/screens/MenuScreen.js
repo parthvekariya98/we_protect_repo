@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, DatePickerIOSBase } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const MenuScreen = () => {
@@ -10,8 +10,9 @@ const MenuScreen = () => {
     };
 
     const goToPurchasePremium = () => {
+        navigation.navigate('SignupScreen');
         // navigation.navigate('PremiumFeature')
-        navigation.navigate('Payment');
+        // navigation.navigate('Payment');
     };
 
     return (

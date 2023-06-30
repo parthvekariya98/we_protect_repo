@@ -7,6 +7,9 @@ import MenuScreen from './src/screens/MenuScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import PremiumFeatures from './src/screens/PremiumFeatures';
 import PaymentScreen from './src/screens/PaymentScreen';
+import SignupScreen from './src/screens/SignupScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import ForgotPassword from './src/screens/ForgotPassword';
 
 const Stack = createStackNavigator();
 
@@ -95,6 +98,27 @@ const App = () => {
                 <Image source={require('./src/images/ic_back.png')} style={{ width: 30, height: 30 }} />
               </TouchableOpacity>
             ),
+          })}
+        />
+         <Stack.Screen
+          name="SignupScreen"
+          component={SignupScreen}
+          options={({ navigation }) => ({
+            headerShown: false
+          })}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={({ navigation }) => ({
+            headerShown: false
+          })}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={({ navigation }) => ({
+            headerShown: false
           })}
         />
         <Stack.Screen
