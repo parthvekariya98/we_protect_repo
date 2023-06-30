@@ -4,26 +4,16 @@ import { View, Text, Image, TextInput, FlatList, Alert, ScrollView } from 'react
 
 const MainScreen = () => {
   const [postalCode, setPostalCode] = useState('');
+  const [currentLocation, setCurrentLocation] = useState('Scarborough, ON');
   const predictions = [
-    { time: '8:00 AM', high: 'High 26℃', low: 'Low 15℃' },
-    { time: '9:00 AM', high: 'High 28℃', low: 'Low 17℃' },
-    { time: '10:00 AM', high: 'High 30℃', low: 'Low 19℃' },
-    { time: '11:00 AM', high: 'High 26℃', low: 'Low 15℃' },
-    { time: '12:00 PM', high: 'High 28℃', low: 'Low 17℃' },
-    { time: '1:00 PM', high: 'High 30℃', low: 'Low 19℃' },
-    { time: '2:00 PM', high: 'High 26℃', low: 'Low 15℃' },
-    { time: '3:00 PM', high: 'High 28℃', low: 'Low 17℃' },
-    { time: '4:00 PM', high: 'High 30℃', low: 'Low 19℃' },
-    { time: '5:00 PM', high: 'High 26℃', low: 'Low 15℃' },
-    { time: '6:00 PM', high: 'High 28℃', low: 'Low 17℃' },
-    { time: '7:00 PM', high: 'High 30℃', low: 'Low 19℃' },
-    { time: '8:00 PM', high: 'High 30℃', low: 'Low 19℃' },
-    { time: '9:00 PM', high: 'High 26℃', low: 'Low 15℃' },
-    { time: '10:00 PM', high: 'High 28℃', low: 'Low 17℃' },
-    { time: '11:00 PM', high: 'High 30℃', low: 'Low 19℃' },
-    { time: '12:00 AM', high: 'High 26℃', low: 'Low 15℃' },
-    { time: '1:00 AM', high: 'High 28℃', low: 'Low 17℃' },
-    { time: '2:00 AM', high: 'High 30℃', low: 'Low 19℃' },
+    { time: '11:00 AM', high: 'High 22℃', low: 'Low 21℃' },
+    { time: '12:00 PM', high: 'High 24℃', low: 'Low 22℃' },
+    { time: '1:00 PM', high: 'High 23℃', low: 'Low 21℃' },
+    { time: '2:00 PM', high: 'High 23℃', low: 'Low 22℃' },
+    { time: '3:00 PM', high: 'High 22℃', low: 'Low 21℃' },
+    { time: '4:00 PM', high: 'High 22℃', low: 'Low 20℃' },
+    { time: '5:00 PM', high: 'High 21℃', low: 'Low 20℃' },
+    { time: '6:00 PM', high: 'High 20℃', low: 'Low 19℃' }
   ];
 
   const validatePostalCode = () => {
@@ -41,7 +31,7 @@ const MainScreen = () => {
       console.log('Postal code:', postalCode);
     }
   };
-  
+
   const renderItem = ({ item }) => (
     <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 20, paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: 'white', backgroundColor: '#82CAF8' }}>
       <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -56,34 +46,39 @@ const MainScreen = () => {
 
   return (
     <ScrollView>
-    <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#9CD4F8' }}>
-      <Image source={require('../images/icon6.png')} style={{ width: 300, height: 300,marginTop: 20 }} />
-      <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>20°C</Text>
-      <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Feels like 15°C</Text>
-      <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Night 5°C ↓ Day 28°C ↑</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
-        <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginRight: 10 }}>Enter postal code</Text>
-        <TextInput
-          style={{ height: 40, width: 200, borderColor: 'white', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, color: 'black', backgroundColor: 'white' }}
-          placeholder="e.g., A1B2C3"
-          maxLength={6}
-          value={postalCode}
-          onChangeText={text => setPostalCode(text)}
-          onSubmitEditing={handlePostalCodeSubmit}
-        />
+      <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#9CD4F8' }}>
+        <Image source={require('../images/icon1.png')} style={{ width: 300, height: 300, marginTop: 20, marginLeft:40 }} />
+        <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>22°C</Text>
+        <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Feels like 22°C</Text>
+        <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Night 19°C ↓ Day 24°C ↑</Text>
+        {currentLocation == '' ?
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+            <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginRight: 10 }}>Enter postal code</Text>
+            <TextInput
+              style={{ height: 40, width: 200, borderColor: 'white', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, color: 'black', backgroundColor: 'white' }}
+              placeholder="e.g., A1B2C3"
+              maxLength={6}
+              value={postalCode}
+              onChangeText={text => setPostalCode(text)}
+              onSubmitEditing={handlePostalCodeSubmit}
+            />
+          </View>
+          :
+          <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{currentLocation}</Text>
+        }
+
+        <View style={{ width: '100%', marginTop: 20 }}>
+          <View style={{ height: 1, backgroundColor: 'white', marginBottom: 5 }} />
+          <Text style={{ fontSize: 16, fontWeight: '300', color: 'white', marginBottom: 5, textAlign: 'center' }}>Weather Predictions for the Day</Text>
+          <View style={{ height: 1, backgroundColor: 'white' }} />
+          <FlatList
+            data={predictions}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            scrollEnabled={false}
+          />
+        </View>
       </View>
-      <View style={{ width: '100%', marginTop: 20 }}>
-      <View style={{ height: 1, backgroundColor: 'white', marginBottom: 5 }} />
-        <Text style={{ fontSize: 16, fontWeight: '300', color: 'white', marginBottom: 5, textAlign:'center' }}>Weather Predictions for the Day</Text>
-        <View style={{ height: 1, backgroundColor: 'white' }} />
-        <FlatList
-          data={predictions}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-          scrollEnabled={false}
-        />
-      </View>
-    </View>
     </ScrollView>
   );
 };
