@@ -1,6 +1,9 @@
 // MainScreen.js
 import React, { useState } from 'react';
 import { View, Text, Image, TextInput, FlatList, Alert, ScrollView } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 const MainScreen = () => {
   const [postalCode, setPostalCode] = useState('');
