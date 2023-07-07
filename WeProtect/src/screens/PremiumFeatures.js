@@ -10,8 +10,8 @@ const PremiumFeatures = () => {
         // Save button action
     };
 
-    const handleEditProfile = () => {
-        // Handle edit profile action
+    const compareButtonTap = () => {
+        navigation.navigate('CompareScreen');
     };
 
     return (
@@ -43,7 +43,7 @@ const PremiumFeatures = () => {
                 </View>
 
                 <TouchableOpacity
-                    onPress={saveButtonTap}
+                    onPress={compareButtonTap}
                     style={styles.saveBtn}>
                     <Text style={{ fontSize: 18, fontWeight: '600', color: 'white' }}>COMPARE</Text>
                 </TouchableOpacity>

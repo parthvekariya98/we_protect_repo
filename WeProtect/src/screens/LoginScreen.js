@@ -10,6 +10,7 @@ const LoginScreen = () => {
 
     const handleLogin = () => {
         // Perform login action
+        navigation.navigate('PremiumFeature')
     };
 
     const handleForgotPassword = () => {

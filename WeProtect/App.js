@@ -10,6 +10,7 @@ import PaymentScreen from './src/screens/PaymentScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import ForgotPassword from './src/screens/ForgotPassword';
+import CompareScreen from './src/screens/CompareScreen';
 
 const Stack = createStackNavigator();
 
@@ -119,6 +120,23 @@ const App = () => {
           component={ForgotPassword}
           options={({ navigation }) => ({
             headerShown: false
+          })}
+        />
+         <Stack.Screen
+          name="CompareScreen"
+          component={CompareScreen}
+          options={({ navigation }) => ({
+            title: 'Weather Comparison',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 20,
+              color: 'white',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => handleMenuPress(navigation)} style={{ marginLeft: 16 }}>
+                <Image source={require('./src/images/ic_back.png')} style={{ width: 24, height: 24 }} />
+              </TouchableOpacity>
+            ),
           })}
         />
         <Stack.Screen

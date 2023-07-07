@@ -11,6 +11,7 @@ const SignupScreen = () => {
 
     const handleSignup = () => {
         // Perform signup action
+        navigation.navigate('PremiumFeature')
     };
 
     return (
