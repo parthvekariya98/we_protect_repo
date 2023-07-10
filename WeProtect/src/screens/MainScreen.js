@@ -1,13 +1,15 @@
 // MainScreen.js
-import React, { useState } from 'react';
-import { View, Text, Image, TextInput, FlatList, Alert, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TextInput, FlatList, Alert, ScrollView, ActivityIndicator } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import axios from 'axios';
 
 
 const MainScreen = () => {
   const [postalCode, setPostalCode] = useState('');
-  const [currentLocation, setCurrentLocation] = useState('Scarborough, ON');
+  const [currentLocation, setCurrentLocation] = useState('');
+  const [loading, setLoading] = useState(false);
   const predictions = [
     { time: '11:00 AM', high: 'High 22℃', low: 'Low 21℃' },
     { time: '12:00 PM', high: 'High 24℃', low: 'Low 22℃' },
@@ -20,18 +22,47 @@ const MainScreen = () => {
   ];
 
   const validatePostalCode = () => {
-    const regex = /^[A-Za-z]{2}\d[A-Za-z]\d$/;
-    if (postalCode.length !== 6 || !regex.test(postalCode)) {
-      Alert.alert('Invalid Postal Code', 'Please enter a valid postal code.');
+    const regex = /^[A-Za-z]\d[A-Za-z]?\d[A-Za-z]\d$/;
+    if (!regex.test(postalCode)) {
+      Alert.alert('Invalid Postal Code', 'Please enter a valid Canadian postal code.');
       return false;
     }
     return true;
   };
-
-  const handlePostalCodeSubmit = () => {
+  
+  const handlePostalCodeSubmit = async () => {
     if (validatePostalCode()) {
-      // Postal code is valid, proceed with further actions
-      console.log('Postal code:', postalCode);
+      setLoading(true);
+      try {
+        const response = await getCityFromPostalCode(postalCode);
+        if (response) {
+          setCurrentLocation(response);
+        } else {
+          setCurrentLocation('');
+        }
+      } catch (error) {
+        console.error('Error fetching city data:', error);
+        setCurrentLocation('');
+      } finally {
+        setLoading(false);
+      }
+    } 
+  };
+  
+  const getCityFromPostalCode = async (postalCode) => {
+    try {
+      const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${postalCode}&key=0c95cd54ecfb432d9d763db20bb9ec30`);
+      if (response.data && response.data.results.length > 0) {
+        const { city } = response.data.results[0].components;
+        const { state_code } = response.data.results[0].components;
+        const final = `${city}, ${state_code}`;
+        return final;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching city data:', error);
+      return null;
     }
   };
 
@@ -50,7 +81,7 @@ const MainScreen = () => {
   return (
     <ScrollView>
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#9CD4F8' }}>
-        <Image source={require('../images/icon1.png')} style={{ width: 300, height: 300, marginTop: 20, marginLeft:40 }} />
+        <Image source={require('../images/icon1.png')} style={{ width: 300, height: 300, marginTop: 20, marginLeft: 40 }} />
         <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>22°C</Text>
         <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Feels like 22°C</Text>
         <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Night 19°C ↓ Day 24°C ↑</Text>
@@ -67,7 +98,10 @@ const MainScreen = () => {
             />
           </View>
           :
-          <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{currentLocation}</Text>
+          <TouchableOpacity onPress={() => {setCurrentLocation('')}}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{currentLocation}</Text>
+          </TouchableOpacity>
+          
         }
 
         <View style={{ width: '100%', marginTop: 20 }}>
@@ -81,7 +115,15 @@ const MainScreen = () => {
             scrollEnabled={false}
           />
         </View>
+        
       </View>
+      {loading && (
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(5px)', justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" color="gray" />
+          </View>
+        </View>
+      )}
     </ScrollView>
   );
 };
