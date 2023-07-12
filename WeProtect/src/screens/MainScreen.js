@@ -4,12 +4,16 @@ import { View, Text, Image, TextInput, FlatList, Alert, ScrollView, ActivityIndi
 import Geolocation from '@react-native-community/geolocation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
-
+import { getWeather, dailyForecast, showWeather, getLocation } from 'react-native-weather-api';
+import { getCelsiusToKelvin } from '../helper/helper';
 
 const MainScreen = () => {
   const [postalCode, setPostalCode] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  const [weatherData, setWeatherData] = useState(null);
+
   const predictions = [
     { time: '11:00 AM', high: 'High 22℃', low: 'Low 21℃' },
     { time: '12:00 PM', high: 'High 24℃', low: 'Low 22℃' },
@@ -56,6 +60,14 @@ const MainScreen = () => {
         const { city } = response.data.results[0].components;
         const { state_code } = response.data.results[0].components;
         const final = `${city}, ${state_code}`;
+        
+        try {
+          const data = await fetchWeatherByCity(city, "CA");
+          setWeatherData(data);
+        } catch (error) {
+          console.error('Error fetching weather data:', error);
+        }
+
         return final;
       } else {
         return null;
@@ -63,6 +75,20 @@ const MainScreen = () => {
     } catch (error) {
       console.error('Error fetching city data:', error);
       return null;
+    }
+  };
+
+  const fetchWeatherByCity = async (city, country) => {
+    try {
+      const weatherData = await getWeather({
+        key: "d81cc63be876f0325597520897439de7",
+        city: city,
+        country: country
+      });
+      return new showWeather(weatherData);
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      throw error;
     }
   };
 
@@ -82,9 +108,9 @@ const MainScreen = () => {
     <ScrollView>
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#9CD4F8' }}>
         <Image source={require('../images/icon1.png')} style={{ width: 300, height: 300, marginTop: 20, marginLeft: 40 }} />
-        <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>22°C</Text>
-        <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Feels like 22°C</Text>
-        <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Night 19°C ↓ Day 24°C ↑</Text>
+        <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{weatherData ? getCelsiusToKelvin(weatherData.temp) : '22°C'}</Text>
+        <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Feels like {weatherData ? getCelsiusToKelvin(weatherData.feels_like) : '22°C'}</Text>
+        <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Night {weatherData ? getCelsiusToKelvin(weatherData.temp_min) : '22°C'} ↓ Day {weatherData ? getCelsiusToKelvin(weatherData.temp_max) : '22°C'} ↑</Text>
         {currentLocation == '' ?
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
             <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginRight: 10 }}>Enter postal code</Text>
