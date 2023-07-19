@@ -127,7 +127,13 @@ const MainScreen = () => {
             // source={{ uri: weatherData ? weatherData.icon : '' }}
             style={{ width: 300, height: 300, marginTop: 20, marginLeft: 40 }} 
           />
+          <View style={{flexDirection:'row'}}>
           <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{weatherData ? getCelsiusToKelvin(weatherData.temp) : ''}</Text>
+          <Image 
+            source={{ uri: weatherData ? weatherData.icon : '' }}
+            style={{ width: 50, height: 50 }} 
+          />
+          </View>
           <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Feels like {weatherData ? getCelsiusToKelvin(weatherData.feels_like) + ' (' + weatherData.description + ')' : ''}</Text>
           <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Night {weatherData ? getCelsiusToKelvin(weatherData.temp_min) : ''} ↓ Day {weatherData ? getCelsiusToKelvin(weatherData.temp_max) : ''} ↑</Text>
           {currentLocation == '' ?
