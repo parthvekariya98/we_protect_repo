@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import colors from '../helper/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const PaymentScreen = () => {
+  const navigation = useNavigation();
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -47,6 +49,7 @@ const PaymentScreen = () => {
   
     // Handle payment logic
     console.log('Payment submitted');
+    navigation.navigate('PremiumFeature')
   };
 
   return (
