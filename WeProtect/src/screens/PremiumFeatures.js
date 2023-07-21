@@ -14,6 +14,10 @@ const PremiumFeatures = () => {
         navigation.navigate('CompareScreen');
     };
 
+    const newsBtnTap = () => {
+        navigation.navigate('NewsAlerts');
+    };
+
     return (
         <View style={{ flex: 1, backgroundColor: '#9CD4F8', alignItems: 'center' }}>
             <View style={styles.cameraView}>
@@ -50,7 +54,7 @@ const PremiumFeatures = () => {
             </View>
             <View style={styles.newsAlerts}>
                 <TouchableOpacity
-                    onPress={saveButtonTap}
+                    onPress={newsBtnTap}
                     style={styles.saveBtn}>
                     <Text style={{ fontSize: 18, fontWeight: '600', color: 'white' }}>NEWS ALERTS</Text>
                 </TouchableOpacity>

@@ -27,6 +27,7 @@ const PaymentScreen = () => {
   };
 
   const handlePayment = () => {
+    navigation.navigate('PremiumFeature')
     if (!validateCardNumber(cardNumber)) {
       Alert.alert('Error', 'Please enter a valid card number');
       return;
@@ -49,7 +50,7 @@ const PaymentScreen = () => {
   
     // Handle payment logic
     console.log('Payment submitted');
-    navigation.navigate('PremiumFeature')
+    // navigation.navigate('PremiumFeature')
   };
 
   return (

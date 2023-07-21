@@ -11,6 +11,7 @@ import SignupScreen from './src/screens/SignupScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import ForgotPassword from './src/screens/ForgotPassword';
 import CompareScreen from './src/screens/CompareScreen';
+import NewsAlerts from './src/screens/NewsAlerts';
 
 const Stack = createStackNavigator();
 
@@ -144,6 +145,23 @@ const App = () => {
           component={PaymentScreen}
           options={({ navigation }) => ({
             title: 'Payment',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 20,
+              color: 'white',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => handleBackButton(navigation)} style={{ marginLeft: 16 }}>
+                <Image source={require('./src/images/ic_back.png')} style={{ width: 30, height: 30 }} />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="NewsAlerts"
+          component={NewsAlerts}
+          options={({ navigation }) => ({
+            title: 'News Alerts',
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontSize: 20,
