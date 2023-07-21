@@ -27,7 +27,9 @@ const PaymentScreen = () => {
   };
 
   const handlePayment = () => {
+    //temporary redirect
     navigation.navigate('PremiumFeature')
+    //---------------->
     if (!validateCardNumber(cardNumber)) {
       Alert.alert('Error', 'Please enter a valid card number');
       return;
