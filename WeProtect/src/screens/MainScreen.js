@@ -8,14 +8,22 @@ import { getWeather, dailyForecast, showWeather, getLocation } from 'react-nativ
 import { getCelsiusToKelvin, getFormattedHourFromDate, roundOff } from '../helper/helper';
 import { widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-const MainScreen = () => {
+const MainScreen = ({ route }) => {
   const [postalCode, setPostalCode] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [loading, setLoading] = useState(false);
   const [hourlyData, setHourlyData] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
   const navigation = useNavigation();
+  // const { location } = route.params;
 
+  useEffect(() => {
+    if (route.params?.location) {
+      setCurrentLocation('')
+      handleLocationFromMap(route.params.location);
+    }
+  }, [route.params?.location]);
+  
   const handleLocationSelect = () => {
     navigation.navigate('MapViewScreen');
   };
@@ -48,6 +56,23 @@ const MainScreen = () => {
     }
   };
 
+  const handleLocationFromMap = async (location) => {
+    setLoading(true);
+    try {
+      const response = await getCityFromLatLng(location.latitude, location.longitude);
+      if (response) {
+        setCurrentLocation(response);
+      } else {
+        setCurrentLocation('');
+      }
+    } catch (error) {
+      console.error('Error fetching city data:', error);
+      setCurrentLocation('');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getCityFromPostalCode = async (postalCode) => {
     try {
       const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${postalCode}&key=0c95cd54ecfb432d9d763db20bb9ec30`);
@@ -58,8 +83,6 @@ const MainScreen = () => {
 
         try {
           const data = await fetchWeatherByCity(city, "CA");
-          console.log('--------->');
-          console.log(data);
           setWeatherData(data);
         } catch (error) {
           console.error('Error fetching weather data:', error);
@@ -74,6 +97,32 @@ const MainScreen = () => {
       return null;
     }
   };
+
+  const getCityFromLatLng = async (latitude, longitude) => {
+    try {
+      const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=0c95cd54ecfb432d9d763db20bb9ec30`);
+      if (response.data && response.data.results.length > 0) {
+        const { city } = response.data.results[0].components;
+        const { state_code } = response.data.results[0].components;
+        const final = `${city}, ${state_code}`;
+
+        try {
+          const data = await fetchWeatherByCity(city, "CA");
+          setWeatherData(data);
+        } catch (error) {
+          console.error('Error fetching weather data:', error);
+        }
+        
+        return final;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching city data:', error);
+      return null;
+    }
+  };
+  
 
   const fetchWeatherByCity = async (city, country) => {
     try {
