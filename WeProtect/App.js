@@ -12,6 +12,7 @@ import LoginScreen from './src/screens/LoginScreen';
 import ForgotPassword from './src/screens/ForgotPassword';
 import CompareScreen from './src/screens/CompareScreen';
 import NewsAlerts from './src/screens/NewsAlerts';
+import MapViewScreen from './src/screens/MapViewScreen';
 
 const Stack = createStackNavigator();
 
@@ -162,6 +163,23 @@ const App = () => {
           component={NewsAlerts}
           options={({ navigation }) => ({
             title: 'News Alerts',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 20,
+              color: 'white',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => handleBackButton(navigation)} style={{ marginLeft: 16 }}>
+                <Image source={require('./src/images/ic_back.png')} style={{ width: 30, height: 30 }} />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="MapViewScreen"
+          component={MapViewScreen}
+          options={({ navigation }) => ({
+            title: 'Map View',
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontSize: 20,

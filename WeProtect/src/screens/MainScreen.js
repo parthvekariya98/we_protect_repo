@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TextInput, FlatList, Alert, ScrollView, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Image, TextInput, FlatList, Alert, ScrollView, ActivityIndicator, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { getWeather, dailyForecast, showWeather, getLocation } from 'react-native-weather-api';
 import { getCelsiusToKelvin, getFormattedHourFromDate, roundOff } from '../helper/helper';
+import { widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const MainScreen = () => {
   const [postalCode, setPostalCode] = useState('');
@@ -12,6 +14,11 @@ const MainScreen = () => {
   const [loading, setLoading] = useState(false);
   const [hourlyData, setHourlyData] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
+  const navigation = useNavigation();
+
+  const handleLocationSelect = () => {
+    navigation.navigate('MapViewScreen');
+  };
 
   const validatePostalCode = () => {
     const regex = /^[A-Za-z]\d[A-Za-z]?\d[A-Za-z]\d$/;
@@ -75,7 +82,7 @@ const MainScreen = () => {
         city: city,
         country: country
       });
-      
+
       fetchHourlyWeather(city);
       return new showWeather(weatherData);
     } catch (error) {
@@ -104,16 +111,16 @@ const MainScreen = () => {
   };
 
   const renderItem = ({ item }) => (
-    <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 20, paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: 'white', backgroundColor: '#82CAF8' }}>
-      <View style={{ flex: 2, justifyContent: 'center' }}>
-        <Text style={{ fontSize: 18, fontWeight: '600', color: 'white' }}>{getFormattedHourFromDate(item.dt_txt)}</Text>
+    <View style={styles.weatherItem}>
+      <View style={styles.timeContainer}>
+        <Text style={styles.timeText}>{getFormattedHourFromDate(item.dt_txt)}</Text>
       </View>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
-        <Text style={{ fontSize: 18, fontWeight: '600', color: 'white' }}>{roundOff(item.main.temp)}</Text>
+      <View style={styles.temperatureContainer}>
+        <Text style={styles.temperatureText}>{roundOff(item.main.temp)}</Text>
       </View>
-      <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
-        <Text style={{ fontSize: 15, fontWeight: '300', color: 'white', marginBottom: 5 }}>{roundOff(item.main.temp_max)} ↑</Text>
-        <Text style={{ fontSize: 15, fontWeight: '300', color: 'white' }}>{roundOff(item.main.temp_min)} ↓</Text>
+      <View style={styles.tempMinMaxContainer}>
+        <Text style={styles.tempMinMaxText}>{roundOff(item.main.temp_max)} ↑</Text>
+        <Text style={styles.tempMinMaxText}>{roundOff(item.main.temp_min)} ↓</Text>
       </View>
     </View>
   );
@@ -121,26 +128,29 @@ const MainScreen = () => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#9CD4F8' }}>
-          <Image 
-            source={require('../images/icon1.png')} 
+        <View style={styles.container}>
+          <Image
+            source={require('../images/icon1.png')}
             // source={{ uri: weatherData ? weatherData.icon : '' }}
-            style={{ width: 300, height: 300, marginTop: 20, marginLeft: 40 }} 
+            style={styles.weatherIcon}
           />
-          <View style={{flexDirection:'row'}}>
-          <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{weatherData ? getCelsiusToKelvin(weatherData.temp) : ''}</Text>
-          <Image 
-            source={{ uri: weatherData ? weatherData.icon : '' }}
-            style={{ width: 50, height: 50 }} 
-          />
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.temperature}>{weatherData ? getCelsiusToKelvin(weatherData.temp) : ''}</Text>
+            <Image
+              source={{ uri: weatherData ? weatherData.icon : '' }}
+              style={styles.iconImage}
+            />
           </View>
-          <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Feels like {weatherData ? getCelsiusToKelvin(weatherData.feels_like) + ' (' + weatherData.description + ')' : ''}</Text>
-          <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginTop: 5 }}>Night {weatherData ? getCelsiusToKelvin(weatherData.temp_min) : ''} ↓ Day {weatherData ? getCelsiusToKelvin(weatherData.temp_max) : ''} ↑</Text>
+          <Text style={styles.feelsLike}>Feels like {weatherData ? getCelsiusToKelvin(weatherData.feels_like) + ' (' + weatherData.description + ')' : ''}</Text>
+          <Text style={styles.tempMinMax}>Night {weatherData ? getCelsiusToKelvin(weatherData.temp_min) : ''} ↓ Day {weatherData ? getCelsiusToKelvin(weatherData.temp_max) : ''} ↑</Text>
+
+          {/* Postal Code and Select Location */}
           {currentLocation == '' ?
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
-              <Text style={{ fontSize: 18, fontWeight: '300', color: 'white', marginRight: 10 }}>Enter postal code</Text>
+          <View style={styles.postalCodeContainer}>
+            <View style={styles.postalCodeInputContainer}>
+              <Text style={styles.postalCodeText}>Enter postal code</Text>
               <TextInput
-                style={{ height: 40, width: 200, borderColor: 'white', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, color: 'black', backgroundColor: 'white' }}
+                style={styles.postalCodeInput}
                 placeholder="e.g., A1B2C3"
                 maxLength={6}
                 value={postalCode}
@@ -148,17 +158,24 @@ const MainScreen = () => {
                 onSubmitEditing={handlePostalCodeSubmit}
               />
             </View>
-            :
-            <TouchableOpacity onPress={() => { setCurrentLocation('') }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', marginTop: 5 }}>{currentLocation}</Text>
+            <Text style={styles.orText}>----  OR  ----</Text>
+            <TouchableOpacity onPress={handleLocationSelect} style={styles.selectLocationButton}>
+              <Text style={styles.selectLocationButtonText}>Select Location</Text>
             </TouchableOpacity>
-
+          </View>
+          
+          
+           :
+            <TouchableOpacity onPress={() => { setCurrentLocation('') }}>
+              <Text style={styles.currentLocationText}>{currentLocation}</Text>
+            </TouchableOpacity>
           }
 
-          <View style={{ width: '100%', marginTop: 20 }}>
-            <View style={{ height: 1, backgroundColor: 'white', marginBottom: 5 }} />
-            <Text style={{ fontSize: 16, fontWeight: '300', color: 'white', marginBottom: 5, textAlign: 'center' }}>Weather Predictions for the Day</Text>
-            <View style={{ height: 1, backgroundColor: 'white' }} />
+          {/* Weather Predictions */}
+          <View style={styles.weatherPredictionsContainer}>
+            <View style={styles.separator} />
+            <Text style={styles.weatherPredictionsTitle}>Weather Predictions for the Day</Text>
+            <View style={styles.separator} />
             <FlatList
               data={hourlyData}
               renderItem={renderItem}
@@ -177,7 +194,150 @@ const MainScreen = () => {
         </View>
       )}
     </KeyboardAvoidingView>
+  
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#9CD4F8',
+  },
+  weatherIcon: {
+    width: 300,
+    height: 300,
+    marginTop: 20,
+    marginLeft: 40,
+  },
+  temperature: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'white',
+    marginTop: 5,
+  },
+  iconImage: {
+    width: 50,
+    height: 50,
+  },
+  feelsLike: {
+    fontSize: 18,
+    fontWeight: '300',
+    color: 'white',
+    marginTop: 5,
+  },
+  tempMinMax: {
+    fontSize: 18,
+    fontWeight: '300',
+    color: 'white',
+    marginTop: 5,
+  },
+  postalCodeContainer: {
+    alignItems: 'center',
+  },
+  postalCodeInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  postalCodeText: {
+    fontSize: 18,
+    fontWeight: '300',
+    color: 'white',
+    marginRight: 10,
+  },
+  postalCodeInput: {
+    height: 40,
+    width: 200,
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    color: 'black',
+    backgroundColor: 'white',
+  },
+  orText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    marginVertical: 10,
+  },
+  selectLocationButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: '#439CEF',
+    borderRadius: 8,
+    width: wp('42%'),
+  },
+  selectLocationButtonText: {
+    fontSize: 18,
+    fontWeight: '300',
+    color: 'white',
+  },
+  currentLocationText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'white',
+    marginTop: 5,
+  },
+  weatherPredictionsContainer: {
+    width: '100%',
+    marginTop: 20,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: 'white',
+  },
+  weatherPredictionsTitle: {
+    fontSize: 16,
+    fontWeight: '300',
+    color: 'white',
+    marginVertical: 5,
+    textAlign: 'center',
+  },
+  weatherItem: {
+    flexDirection: 'row',
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingVertical: 7,
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
+    backgroundColor: '#82CAF8',
+  },
+  timeContainer: {
+    flex: 2,
+    justifyContent: 'center',
+  },
+  timeText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'white',
+  },
+  temperatureContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  temperatureText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'white',
+  },
+  tempMinMaxContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  tempMinMaxText: {
+    fontSize: 15,
+    fontWeight: '300',
+    color: 'white',
+    marginBottom: 5,
+  },
+});
 
 export default MainScreen;
