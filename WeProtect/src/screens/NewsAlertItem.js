@@ -3,16 +3,19 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const NewsAlertItem = ({ item }) => {
-  const { image, title, timeAgo } = item;
+  const { urlToImage, title, publishedAt } = item;
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require('../images/ic_news.png')} style={styles.image} />
+        <Image 
+          source={urlToImage ? {uri: item.urlToImage} : require('../images/ic_news.png')} 
+          style={urlToImage ? styles.image : styles.placeholder_image} 
+        />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.timeAgo}>{timeAgo}</Text>
+        <Text style={styles.timeAgo}>{publishedAt}</Text>
       </View>
     </View>
   );
@@ -32,15 +35,23 @@ const styles = StyleSheet.create({
     padding: 10
   },
   imageContainer: {
+    width: wp('25%'),
+    height: wp('25%'),
     marginRight: 10,
-    padding: 10,
     backgroundColor: '#D9D9D9',
-    borderRadius: 10
+    borderRadius: 10,
+    alignItems:'center',
+    justifyContent:'center'
   },
-  image: {
+  placeholder_image: {
     width: wp('20%'),
     height: wp('20%'),
-    // borderRadius: 30,
+    borderRadius: 10,
+  },
+  image: {
+    width: wp('25%'),
+    height: wp('25%'),
+    borderRadius: 10,
   },
   textContainer: {
     flex: 1,

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, ActivityIndicator, Button } from 'react-native';
+import { View, Text, FlatList, Image, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
+import colors from '../helper/colors';
+import NewsAlertItem from './NewsAlertItem';
 
 const API_KEY = '2230500af3a04d8bb7452d87f78dcf2a';
 const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`;
@@ -307,8 +309,39 @@ const NewsAlerts = () => {
     if (dataType === 0) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Button title="Developer" onPress={() => handleDataTypeChange(1)} />
-                <Button title="User" onPress={() => handleDataTypeChange(2)} />
+                <Text style={{ fontSize: 20, color: 'black', textAlign:'center', width: '90%', marginBottom: 10 }}>Please select appropriate type this is to reduce the API calls as we are in testing phase of our application.</Text>
+                <TouchableOpacity
+                    onPress={() => handleDataTypeChange(1)}
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        width: '90%',
+                        marginHorizontal: '5%',
+                        marginVertical: '2%',
+                        paddingHorizontal: 20,
+                        paddingVertical: 15,
+                        backgroundColor: '#0081FB',
+                        borderRadius: 8
+                    }}
+                >
+                    <Text style={{ fontSize: 18, fontWeight: '600', color: 'white' }}>DEVELOPER</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => handleDataTypeChange(2)}
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        width: '90%',
+                        marginHorizontal: '5%',
+                        marginVertical: '2%',
+                        paddingHorizontal: 20,
+                        paddingVertical: 15,
+                        backgroundColor: '#0081FB',
+                        borderRadius: 8
+                    }}
+                >
+                    <Text style={{ fontSize: 18, fontWeight: '600', color: 'white' }}>USER</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -321,19 +354,18 @@ const NewsAlerts = () => {
         );
     }
 
-    if (dataType === 1 || dataType === 2 ) {
+    if (dataType === 1 || dataType === 2) {
         return (
-            <FlatList
-                data={newsData}
-                keyExtractor={(item) => item.title}
-                renderItem={({ item }) => (
-                    <View style={{ padding: 16 }}>
-                        <Image source={{ uri: item.urlToImage }} style={{ width: 200, height: 100 }} />
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.title}</Text>
-                        <Text>{item.publishedAt}</Text>
-                    </View>
-                )}
-            />
+            <View style={{backgroundColor:colors.primary, alignItems:'center'}}>
+                <FlatList
+                    data={newsData}
+                    keyExtractor={(item) => item.title}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item }) => (
+                        <NewsAlertItem item={item} />
+                    )}
+                />
+            </View>
         );
     }
 };
