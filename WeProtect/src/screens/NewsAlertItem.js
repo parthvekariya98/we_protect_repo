@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { formatTimeAgo } from '../helper/helper';
 
 const NewsAlertItem = ({ item }) => {
   const { urlToImage, title, publishedAt } = item;
@@ -15,7 +16,7 @@ const NewsAlertItem = ({ item }) => {
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.timeAgo}>{publishedAt}</Text>
+        <Text style={styles.timeAgo}>{formatTimeAgo(publishedAt)}</Text>
       </View>
     </View>
   );

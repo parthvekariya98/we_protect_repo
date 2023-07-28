@@ -17,3 +17,27 @@ export const getFormattedHourFromDate = (date) => {
     const period = isAM ? 'AM' : 'PM';
     return `${formattedHour}:00 ${period}`;
 };
+
+export const formatTimeAgo = (publishedAt) => {
+    const currentDate = new Date();
+    const publishedDate = new Date(publishedAt);
+    const timeDifferenceInSeconds = Math.floor((currentDate - publishedDate) / 1000);
+  
+    const MINUTE = 60;
+    const HOUR = 60 * MINUTE;
+    const DAY = 24 * HOUR;
+  
+    if (timeDifferenceInSeconds < MINUTE) {
+      return "Just now";
+    } else if (timeDifferenceInSeconds < HOUR) {
+      const minutesAgo = Math.floor(timeDifferenceInSeconds / MINUTE);
+      return `${minutesAgo} minute${minutesAgo === 1 ? "" : "s"} ago`;
+    } else if (timeDifferenceInSeconds < DAY) {
+      const hoursAgo = Math.floor(timeDifferenceInSeconds / HOUR);
+      return `${hoursAgo} hour${hoursAgo === 1 ? "" : "s"} ago`;
+    } else {
+      const daysAgo = Math.floor(timeDifferenceInSeconds / DAY);
+      return `${daysAgo} day${daysAgo === 1 ? "" : "s"} ago`;
+    }
+  };
+  
